@@ -115,6 +115,7 @@ namespace DataAccess.ClassesDataAccess
             //       adapter.InsertCommand = new SQLiteCommand(sql);
             //       var result = adapter.InsertCommand.ExecuteNonQuery();
             int result = comand.ExecuteNonQuery();
+            // başarısız olursa -1 dönecek --- başarılı olursa +1 dönecek
 
             comand.Dispose();
             if (result < 0)
@@ -126,32 +127,41 @@ namespace DataAccess.ClassesDataAccess
 
 
         }
-        public void UpdateClass()
+        public Classes UpdateClassesById(Classes model)
         {
             SQLiteCommand comand;
             SQLiteDataAdapter adapter = new SQLiteDataAdapter();
-            String sql = "";
+            string sql;
 
-            sql = "";
+            sql = $"UPDATE Classes SET student_id= {model.StudentId}, course_id= {model.CourseId} WHERE class_id= {model.ClassId}";
             comand = new SQLiteCommand(sql, Connection);
-
-            adapter.UpdateCommand = new SQLiteCommand(sql);
-            adapter.UpdateCommand.ExecuteNonQuery();
+            int result = comand.ExecuteNonQuery();
             comand.Dispose();
+            if (result < 0)
+            {
+                return null;
+            }
+            return model;
+
+         
         }
-        public void DeleteClass()
+        public string DeleteClassesById(int class_id)
         {
-            SQLiteCommand comand;
+            SQLiteCommand command;
             SQLiteDataAdapter adapter = new SQLiteDataAdapter();
-            String sql = "";
-            sql = "";
+            string sql;
 
-            comand = new SQLiteCommand(sql, Connection);
+            sql = $"DELETE FROM Classes WHERE class_id= {class_id}";
 
-            adapter.DeleteCommand = new SQLiteCommand(sql, Connection);
-            adapter.DeleteCommand.ExecuteNonQuery();
-            comand.Dispose();
+            command = new SQLiteCommand(sql, Connection);
+            int result = command.ExecuteNonQuery();
+            command.Dispose();
+            if (result < 0)
+            {
+                return null;
 
+            }
+            return "Silme işlemi başarılı!";
 
 
         }

@@ -9,7 +9,8 @@ namespace BusinnesLayer
         ClassesDataAccess crudClasses = new ClassesDataAccess();
         public string GetRequestById(int class_id)
         {
-            if (class_id == null) {
+            if (class_id == null)
+            {
                 return crudClasses.Exception();
             }
             else
@@ -20,10 +21,10 @@ namespace BusinnesLayer
                     return crudClasses.Exception();
                 }
                 return result;
-                
+
             }
-            
-            
+
+
         }
         public List<Classes> GetAllRequestByClassName(string class_Name)
         {
@@ -41,26 +42,63 @@ namespace BusinnesLayer
                 return result;
 
             }
-           
+
 
         }
         public string CreateRequest(Classes model)
         {
-            if (model == null ) 
+            if (model == null)
             {
-                crudClasses.Exception();
+                return crudClasses.Exception();
             }
             else
             {
-                 var result =crudClasses.CreateClass(model);
-                if (result ==null)
+                var result = crudClasses.CreateClass(model);
+                if (result == null)
                 {
-                   return  crudClasses.Exception();
+                    return crudClasses.Exception();
+                }
+
+
+                return "başarılı";
+
+            }
+            
+        }
+        public string UptadeRequestByIdClasses(Classes model)
+        {
+            if (model == null)
+            {
+                return crudClasses.Exception();
+            }
+            else
+            {
+                var result = crudClasses.UpdateClassesById(model);
+                if (result == null)
+                {
+                    return crudClasses.Exception();
+
                 }
 
             }
-            return "başarılı";
-    
+            return "Güncelleme işlemi başarılı!";
+        }
+
+        public string DeleteRequestByIdClasses(int class_id) {
+            if (class_id == null)
+            {
+                return crudClasses.Exception();
+            }
+            else
+            {
+                var result = crudClasses.DeleteClassesById(class_id);
+                if (result == null)
+                {
+                    return crudClasses.Exception();
+                }
+            }
+            return "Silme işlemi başarılı";
+        
         }
     }
 }

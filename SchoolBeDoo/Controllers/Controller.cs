@@ -24,8 +24,8 @@ namespace SchoolBeDoo.Controllers
             return Ok(result);
         }
 
-        [HttpGet(nameof(GetById))]
-        public IActionResult GetById(int class_id)
+        [HttpGet(nameof(GetByIdInClasses))]
+        public IActionResult GetByIdInClasses(int class_id)
         {
             Businnes businnesLayer = new Businnes();
             var result = businnesLayer.GetRequestById(class_id);
@@ -51,5 +51,32 @@ namespace SchoolBeDoo.Controllers
 
 
         }
+       
+        [HttpPut(nameof(ClassesUpdateById))]
+        public IActionResult ClassesUpdateById(Classes classModel)
+        {
+            Businnes businneslayer = new Businnes();
+            var result = businneslayer.UptadeRequestByIdClasses(classModel);
+            if (result == null)
+            {
+                return NotFound(result);
+
+            }
+            return Ok(result);
+        }
+
+        [HttpDelete(nameof(DeleteByIdClasses))]
+        public IActionResult DeleteByIdClasses(int class_id)
+        {
+            Businnes businnesLayer = new Businnes();
+            var result = businnesLayer.DeleteRequestByIdClasses(class_id);
+            if (result == null)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using BusinnesLayer;
 using Microsoft.AspNetCore.Mvc;
 using SchoolBeDoo.Model;
+using System.Text.Json;
+
 namespace SchoolBeDoo.Controllers
 {
     [Route("/api/SchoolBeDoo")]
@@ -22,17 +24,32 @@ namespace SchoolBeDoo.Controllers
             return Ok(result);
         }
 
-        [HttpGet(nameof(GetClasses))]
-        public IActionResult GetClasses(int class_id)
+        [HttpGet(nameof(GetById))]
+        public IActionResult GetById(int class_id)
         {
             Businnes businnesLayer = new Businnes();
-            var result = businnesLayer.GetRequest(class_id);
-            if (result != "başarılı")
+            var result = businnesLayer.GetRequestById(class_id);
+           if (result == null)
+            {
+                return BadRequest(result);
+
+            }
+            
+            return Ok(result);
+        }
+        [HttpGet(nameof(GetAll))]
+        public IActionResult GetAll(string class_Name)
+        {
+            Businnes businnesLayer = new Businnes();
+            var result = businnesLayer.GetAllRequestByClassName(class_Name);
+            if (result == null)
             {
                 return BadRequest(result);
 
             }
             return Ok(result);
+
+
         }
     }
 }

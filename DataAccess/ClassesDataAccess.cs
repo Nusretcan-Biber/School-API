@@ -1,9 +1,12 @@
 ﻿using SchoolBeDoo.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DataAccess.ClassesDataAccess
@@ -17,27 +20,59 @@ namespace DataAccess.ClassesDataAccess
             string exeptionText = "Boş bırakma skerim";
             return exeptionText;
         }
-        public string GetClasses(int class_id)
+        public List<Classes> GetAllByClassName(string className)
+        {
+            SQLiteCommand comand;
+            List<Classes> list = new List<Classes>();
+            SQLiteDataReader datareader = null;
+            String sql, output = null;
+            DataTable dt = new DataTable();
+
+            sql = $"SELECT * FROM {className}";
+            comand = new SQLiteCommand(sql, Connection);
+            datareader = comand.ExecuteReader();
+           while (datareader.Read())
+            {
+                list.Add(new Classes
+                {
+                    ClassId = datareader.GetInt32(0),
+                    CourseId = datareader.GetInt32(1),
+                    StudentId = datareader.GetInt32(2),
+                });
+            }
+            
+
+            datareader.Close();
+            comand.Dispose();
+            return list;
+
+
+        }
+       
+        public string GetClassesById(int class_id)
         {
             SQLiteCommand command;
             SQLiteDataReader dataReader;
             String sql, Output = "";
 
-             sql = ($"SELECT * FROM Classes WHERE Classes.class_id='{class_id}'");
-           
+            sql = ($"SELECT * FROM Classes WHERE Classes.class_id='{class_id}'");
+
             command = new SQLiteCommand(sql, Connection);
             dataReader = command.ExecuteReader();
+            //command.Parameters.Add(new SQLiteParameter("class_id", class_id));
 
             while (dataReader.Read())
             {
-                Output = Output + dataReader.GetValue(0) + "-" + dataReader.GetValue(1) + "-" + dataReader.GetValue(2) + "\n";
+                Output = Output + "class_id=" + dataReader.GetValue(0) + "\n" + "student_id=" + dataReader.GetValue(1) + "\n" + "course_id=" + dataReader.GetValue(2) + "\n";
             }
-            Console.WriteLine(Output);
+
 
 
             dataReader.Close();
             command.Dispose();
             return Output;
+
+
 
         }
         public Classes CreateClass(Classes model)

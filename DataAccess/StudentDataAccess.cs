@@ -11,36 +11,36 @@ using System.Threading.Tasks;
 
 namespace DataAccess.ClassesDataAccess
 {
-    public class ClassesDataAccess
+    public class StudentDataAccess
     {
         SQLiteConnection Connection = DBConnection.SqLiteConnection();
 
         public string Exception()
         {
-            string exeptionText = "Boş bırakma";
+            string exeptionText = "Boş bırakma!";
             return exeptionText;
         }
-        public List<Classes> GetAllByClassName()
+        public List<Student> GetAllByStudentName()
         {
             SQLiteCommand comand;
-            List<Classes> list = new List<Classes>();
+            List<Student> list = new List<Student>();
             SQLiteDataReader datareader = null;
             String sql, output = null;
-            DataTable dt = new DataTable();
 
-            sql = $"SELECT * FROM Classes";
+
+            sql = "SELECT * FROM Students";
             comand = new SQLiteCommand(sql, Connection);
             datareader = comand.ExecuteReader();
-           while (datareader.Read())
+            while (datareader.Read())
             {
-                list.Add(new Classes
+                list.Add(new Student
                 {
-                    ClassId = datareader.GetInt32(0),
-                    CourseId = datareader.GetInt32(1),
-                    StudentId = datareader.GetInt32(2),
+                    StudentId = datareader.GetInt32(0),
+                    StudentName = datareader.GetString(1),
+                    StudentSurname= datareader.GetString(2),
                 });
             }
-            
+
 
             datareader.Close();
             comand.Dispose();
@@ -48,22 +48,22 @@ namespace DataAccess.ClassesDataAccess
 
 
         }
-       
-        public string GetClassesById(int class_id)
+
+        public string GetStudentById(int student_id)
         {
             SQLiteCommand command;
             SQLiteDataReader dataReader;
             String sql, Output = "";
 
-            sql = ($"SELECT * FROM Classes WHERE Classes.class_id='{class_id}'");
+            sql = ($"SELECT * FROM Students WHERE student_id='{student_id}'");
 
             command = new SQLiteCommand(sql, Connection);
             dataReader = command.ExecuteReader();
-            //command.Parameters.Add(new SQLiteParameter("class_id", class_id));
+
 
             while (dataReader.Read())
             {
-                Output = Output + "class_id=" + dataReader.GetValue(0) + "\n" + "student_id=" + dataReader.GetValue(1) + "\n" + "course_id=" + dataReader.GetValue(2) + "\n";
+                Output = Output + "student_id:" + dataReader.GetValue(0) + "\n" + "student_name:" + dataReader.GetValue(1) + "\n" + "student_surname:" + dataReader.GetValue(2) + "\n";
             }
 
 
@@ -75,45 +75,16 @@ namespace DataAccess.ClassesDataAccess
 
 
         }
-        public Classes CreateClass(Classes model)
+        public Student CreateStudent(Student model)
         {
             SQLiteCommand comand;
             SQLiteDataAdapter adapter = new SQLiteDataAdapter();
             string sql;
-            /*
-                        switch (tableName)
-                        {
-                            case "students":
-
-                                column1 = "student_id";
-                                column2 = "student_name";
-                                column3 = "student_surname";
-                                break;
-
-                            case "courses":
-
-                                column1 = "course_id";
-                                column2 = "course_name";
-                                column3 = "teacher";
-                                break;
-
-                            case "classes":
-
-                                column1 = "class_id";
-                                column2 = "student_id";
-                                column3 = "course_id";
-                                break;
-                        }
-
-            */
 
 
-            sql = $"INSERT INTO Classes (class_id, student_id,course_id) VALUES ({model.ClassId}, {model.StudentId}, {model.CourseId})";
+            sql = $"INSERT INTO Students (student_id, student_name, student_surname) VALUES ({model.StudentId}," + '"' + model.StudentName + '"' + "," + '"'+ model.StudentSurname +'"' + ')';
 
             comand = new SQLiteCommand(sql, Connection);
-
-            //       adapter.InsertCommand = new SQLiteCommand(sql);
-            //       var result = adapter.InsertCommand.ExecuteNonQuery();
             int result = comand.ExecuteNonQuery();
             // başarısız olursa -1 dönecek --- başarılı olursa +1 dönecek
 
@@ -127,13 +98,13 @@ namespace DataAccess.ClassesDataAccess
 
 
         }
-        public Classes UpdateClassesById(Classes model)
+        public Student UpdateStudenntById(Student model)
         {
             SQLiteCommand comand;
             SQLiteDataAdapter adapter = new SQLiteDataAdapter();
             string sql;
 
-            sql = $"UPDATE Classes SET student_id= {model.StudentId}, course_id= {model.CourseId} WHERE class_id= {model.ClassId}";
+            sql = "UPDATE Students SET student_name=" + '"' + model.StudentName + '"' + "," + " student_surname =" + '"' + model.StudentSurname + '"' + $" WHERE student_id=  {model.StudentId}";
             comand = new SQLiteCommand(sql, Connection);
             int result = comand.ExecuteNonQuery();
             comand.Dispose();
@@ -143,15 +114,15 @@ namespace DataAccess.ClassesDataAccess
             }
             return model;
 
-         
+
         }
-        public string DeleteClassesById(int class_id)
+        public string DeleteStudentById(int student_id)
         {
             SQLiteCommand command;
             SQLiteDataAdapter adapter = new SQLiteDataAdapter();
             string sql;
 
-            sql = $"DELETE FROM Classes WHERE class_id= {class_id}";
+            sql = $"DELETE FROM Students WHERE student_id= {student_id}";
 
             command = new SQLiteCommand(sql, Connection);
             int result = command.ExecuteNonQuery();

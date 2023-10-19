@@ -4,7 +4,7 @@ using System.Data.SQLite;
 
 namespace BusinnesLayer
 {
-    public class Businnes
+    public class ClassesBusinnes
     {
         ClassesDataAccess crudClasses = new ClassesDataAccess();
         public string GetRequestById(int class_id)
@@ -26,22 +26,17 @@ namespace BusinnesLayer
 
 
         }
-        public List<Classes> GetAllRequestByClassName(string class_Name)
+        public List<Classes> GetAllRequestByClassName()
         {
-            if (class_Name == null)
-            {
-                return null;
-            }
-            else
-            {
-                var result = crudClasses.GetAllByClassName(class_Name);
+          
+                var result = crudClasses.GetAllByClassName();
                 if (result == null)
                 {
                     return null;
                 }
                 return result;
 
-            }
+            
 
 
         }

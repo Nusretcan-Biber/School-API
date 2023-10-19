@@ -9,12 +9,12 @@ namespace SchoolBeDoo.Controllers
     [ApiController]
 
 
-    public class Controller : ControllerBase
+    public class ClassesController : ControllerBase
     {
         [HttpPost(nameof(ClassesCreate))]
         public IActionResult ClassesCreate(Classes classModel)
         {
-            Businnes businnesLayer = new Businnes();
+            ClassesBusinnes businnesLayer = new ClassesBusinnes();
             var result = businnesLayer.CreateRequest(classModel);
             if (result != "başarılı")
             {
@@ -27,9 +27,9 @@ namespace SchoolBeDoo.Controllers
         [HttpGet(nameof(GetByIdInClasses))]
         public IActionResult GetByIdInClasses(int class_id)
         {
-            Businnes businnesLayer = new Businnes();
+            ClassesBusinnes businnesLayer = new ClassesBusinnes();
             var result = businnesLayer.GetRequestById(class_id);
-           if (result == null)
+           if (String.IsNullOrEmpty(result))
             {
                 return BadRequest(result);
 
@@ -37,11 +37,12 @@ namespace SchoolBeDoo.Controllers
             
             return Ok(result);
         }
+       
         [HttpGet(nameof(GetAll))]
-        public IActionResult GetAll(string class_Name)
+        public IActionResult GetAll()
         {
-            Businnes businnesLayer = new Businnes();
-            var result = businnesLayer.GetAllRequestByClassName(class_Name);
+            ClassesBusinnes businnesLayer = new ClassesBusinnes();
+            var result = businnesLayer.GetAllRequestByClassName();
             if (result == null)
             {
                 return BadRequest(result);
@@ -55,7 +56,7 @@ namespace SchoolBeDoo.Controllers
         [HttpPut(nameof(ClassesUpdateById))]
         public IActionResult ClassesUpdateById(Classes classModel)
         {
-            Businnes businneslayer = new Businnes();
+            ClassesBusinnes businneslayer = new ClassesBusinnes();
             var result = businneslayer.UptadeRequestByIdClasses(classModel);
             if (result == null)
             {
@@ -68,7 +69,7 @@ namespace SchoolBeDoo.Controllers
         [HttpDelete(nameof(DeleteByIdClasses))]
         public IActionResult DeleteByIdClasses(int class_id)
         {
-            Businnes businnesLayer = new Businnes();
+            ClassesBusinnes businnesLayer = new ClassesBusinnes();
             var result = businnesLayer.DeleteRequestByIdClasses(class_id);
             if (result == null)
             {
